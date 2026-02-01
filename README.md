@@ -10,6 +10,7 @@
 |---------|-------------|------------|
 | **📖 Getting Started** | New to this? Start here | [Introduction](#introduction) |
 | **🎯 Business Overview** | Executive summary and business case | [Business Guide →](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md) |
+| **🗺️ Visual Guides** | Journey maps, diagrams, decision trees | [Visual Guides →](#-visual-guides) |
 | **🏗️ Architecture** | System design and integration | [Architecture →](./docs/architecture/) |
 | **🔄 Process Flows** | End-to-end journey flows with diagrams | [Flows →](./docs/flows/) |
 | **⚖️ Compliance** | Regulatory requirements by country | [Compliance →](./docs/compliance/) |
@@ -26,22 +27,25 @@ This repository contains complete documentation for implementing a stablecoin di
 
 - ✅ **15 comprehensive sections** covering business, technical, compliance, and risk
 - ✅ **5 complete process flows** with visual sequence diagrams
+- ✅ **6 visual guides** (journey maps, decision trees, comparisons, use cases)
 - ✅ **Regulatory analysis** across 6 jurisdictions (US, EU, UK, India, Singapore, UAE)
 - ✅ **Architecture diagrams** showing system integration
 - ✅ **API specifications** for all integrations
 - ✅ **Risk frameworks** and governance procedures
+- ✅ **Complete glossary** (100+ banking & blockchain terms explained)
 
 ### Who This Is For
 
 | Role | Recommended Sections |
 |------|---------------------|
-| **CXO / Board** | [Executive Overview](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-1) |
-| **Enterprise Architects** | [Architecture](./docs/architecture/), [Technical](./docs/technical/) |
-| **Business Analysts** | [Process Flows](./docs/flows/), [Functional Scope](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-3) |
+| **CXO / Board** | [Executive Overview](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-1), [Use Cases](./docs/REAL_WORLD_SCENARIOS.md), [Comparisons](./docs/COMPARISON_TABLES.md) |
+| **Enterprise Architects** | [Architecture](./docs/architecture/), [Integration Map](./docs/SYSTEM_INTEGRATION_MAP.md), [Technical](./docs/technical/) |
+| **Business Analysts** | [Journey Map](./docs/CUSTOMER_JOURNEY_MAP.md), [Process Flows](./docs/flows/), [Decision Trees](./docs/DECISION_TREES.md) |
 | **Compliance Officers** | [Regulatory Matrix](./docs/compliance/), [GDPR Guide](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART3.md#section-12) |
-| **Developers** | [Technical Setup](./docs/technical/), [API Contracts](./docs/contracts/) |
-| **Risk Managers** | [Risk Assessment](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART3.md#section-14) |
+| **Developers** | [Integration Map](./docs/SYSTEM_INTEGRATION_MAP.md), [API Contracts](./docs/contracts/), [Technical Setup](./docs/technical/) |
+| **Risk Managers** | [Risk Assessment](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART3.md#section-14), [Decision Trees](./docs/DECISION_TREES.md) |
 | **Finance/Accounting** | [Accounting Guide](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART3.md#section-9), [Tax Guide](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART3.md#section-10) |
+| **New to Blockchain** | [Glossary](./docs/GLOSSARY.md), [Use Cases](./docs/REAL_WORLD_SCENARIOS.md), [Comparisons](./docs/COMPARISON_TABLES.md) |
 
 ---
 
@@ -51,6 +55,14 @@ This repository contains complete documentation for implementing a stablecoin di
 stablecoin/
 │
 ├── 📖 README.md (you are here)
+│
+├── 🎯 Quick Start Guides (START HERE!)
+│   ├── CUSTOMER_JOURNEY_MAP.md                            (Visual: How all flows connect)
+│   ├── GLOSSARY.md                                        (100+ terms explained)
+│   ├── REAL_WORLD_SCENARIOS.md                            (6 use cases with actual numbers)
+│   ├── COMPARISON_TABLES.md                               (10 comparisons: stablecoin vs traditional)
+│   ├── DECISION_TREES.md                                  (8 flowcharts for common decisions)
+│   └── SYSTEM_INTEGRATION_MAP.md                          (Visual: How systems connect)
 │
 ├── 📘 Core Implementation Guides
 │   ├── MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md          (Part 1: Sections 1-3)
@@ -82,34 +94,54 @@ stablecoin/
 
 ---
 
+---
+
+## 🎨 Visual Guides
+
+**Perfect for understanding the big picture quickly:**
+
+| Guide | Purpose | Best For | Time |
+|-------|---------|----------|------|
+| [**Customer Journey Map**](./docs/CUSTOMER_JOURNEY_MAP.md) | See how all 5 flows connect in customer lifecycle | Business Analysts, Product Managers | 10 min |
+| [**Glossary**](./docs/GLOSSARY.md) | 100+ banking & blockchain terms explained simply | Everyone (especially non-technical) | 15 min |
+| [**Real-World Scenarios**](./docs/REAL_WORLD_SCENARIOS.md) | 6 concrete use cases with actual numbers & savings | CXO, Business Analysts | 20 min |
+| [**Comparison Tables**](./docs/COMPARISON_TABLES.md) | 10 comparisons: Stablecoin vs Wire Transfer, USDC vs USDT, etc. | Finance, Compliance | 15 min |
+| [**Decision Trees**](./docs/DECISION_TREES.md) | 8 visual flowcharts: Which flow to use? Approve or reject? | Operations, Support | 10 min |
+| [**System Integration Map**](./docs/SYSTEM_INTEGRATION_MAP.md) | Visual data flows, integration specs, security zones | Architects, Developers | 20 min |
+
+---
+
 ## 🎯 Quick Start Paths
 
 ### Path 1: Executive Overview (15 minutes)
 
 **Goal:** Understand business case and strategic rationale
 
-1. Read [Section 1: Executive Overview](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-1)
-2. Review [Regulatory Comparison Table](./docs/compliance/REGULATORY_MATRIX_6_COUNTRIES.md)
-3. Check [Risk Assessment](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART3.md#section-14)
+1. Read [Real-World Scenarios](./docs/REAL_WORLD_SCENARIOS.md) - See actual cost savings with numbers
+2. Review [Comparison Tables](./docs/COMPARISON_TABLES.md) - Stablecoin vs Wire Transfer
+3. Read [Section 1: Executive Overview](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-1)
+4. Check [Regulatory Comparison](./docs/compliance/REGULATORY_MATRIX_6_COUNTRIES.md)
 
 ### Path 2: Business Analysis (2 hours)
 
 **Goal:** Understand complete functional requirements
 
-1. Read [Section 2: Operating Model](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-2)
-2. Study [Section 3: Complete Functional Scope](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-3)
-3. Review [All Process Flows](./docs/flows/ALL_FLOWS_INDEX.md)
-4. Check [Section 4: Phase Planning](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md#section-4)
+1. Start with [Customer Journey Map](./docs/CUSTOMER_JOURNEY_MAP.md) - See big picture
+2. Review [Decision Trees](./docs/DECISION_TREES.md) - Understand decision logic
+3. Read [Section 2: Operating Model](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-2)
+4. Study [Section 3: Complete Functional Scope](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md#section-3)
+5. Review [All Process Flows](./docs/flows/ALL_FLOWS_INDEX.md)
 
 ### Path 3: Technical Implementation (4 hours)
 
 **Goal:** Understand architecture and integration requirements
 
-1. Review [System Context Diagram](./docs/architecture/SYSTEM_CONTEXT_DIAGRAM.md)
-2. Study [Section 6: Architecture](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md#section-6)
-3. Read [Section 8: Integration Contracts](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md#section-8)
-4. Check [API Specifications](./docs/contracts/ATLAS_API_CONTRACTS.md)
-5. Review [Hardhat Setup](./docs/technical/HARDHAT_SETUP_GUIDE.md)
+1. Start with [Glossary](./docs/GLOSSARY.md) - Learn terminology
+2. Review [System Integration Map](./docs/SYSTEM_INTEGRATION_MAP.md) - See data flows
+3. Study [System Context Diagram](./docs/architecture/SYSTEM_CONTEXT_DIAGRAM.md)
+4. Read [Section 6: Architecture](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md#section-6)
+5. Check [API Specifications](./docs/contracts/ATLAS_API_CONTRACTS.md)
+6. Review [Hardhat Setup](./docs/technical/HARDHAT_SETUP_GUIDE.md)
 
 ### Path 4: Compliance Review (3 hours)
 
@@ -207,12 +239,15 @@ Detailed regulatory analysis for:
 
 ## 📊 Documentation Statistics
 
-- **Total Pages:** 50,000+ words across all documents
+- **Total Pages:** 75,000+ words across all documents
 - **Sections:** 15 comprehensive sections
+- **Visual Guides:** 6 (journey maps, glossary, use cases, comparisons, decision trees, integration map)
 - **Process Flows:** 5 with detailed Mermaid diagrams
+- **Diagrams:** 30+ Mermaid diagrams (flows, architecture, decision trees)
 - **Countries Analyzed:** 6 regulatory jurisdictions
 - **API Contracts:** Multiple integration specifications
-- **Tables:** 50+ comparison and reference tables
+- **Tables:** 70+ comparison and reference tables
+- **Glossary Terms:** 100+ banking & blockchain terms explained
 
 ---
 
