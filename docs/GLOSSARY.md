@@ -13,6 +13,31 @@ This glossary explains all technical terms, acronyms, and concepts used througho
 
 ## 🏦 CORE CONCEPTS
 
+### Visual: Banking Ecosystem Roles
+
+```mermaid
+graph TB
+    Customer[Corporate Customer<br/>Wants USDC]
+    Distributor[Our Bank<br/>DISTRIBUTOR<br/>Provides buy/sell/transfer services]
+    Issuer[Circle<br/>ISSUER<br/>Creates/destroys USDC]
+    SettlementBank[BNY Mellon, Citizens Bank<br/>SETTLEMENT BANKS<br/>Hold Circle's reserves]
+    Blockchain[Ethereum Blockchain<br/>PUBLIC LEDGER<br/>Records all transactions]
+
+    Customer -->|Buy/Sell requests| Distributor
+    Distributor -->|Wholesale mint/burn| Issuer
+    Issuer -->|Deposit $40B reserves| SettlementBank
+    Issuer -->|Mint/Burn tokens| Blockchain
+    Distributor -->|Transfer for customers| Blockchain
+
+    style Customer fill:#e1f5ff
+    style Distributor fill:#d4edda
+    style Issuer fill:#fff3cd
+    style SettlementBank fill:#f8d7da
+    style Blockchain fill:#e7e7e7
+```
+
+---
+
 ### Stablecoin
 **Definition:** A digital token (cryptocurrency) whose value is pegged 1:1 to a traditional fiat currency.
 
@@ -98,6 +123,47 @@ This glossary explains all technical terms, acronyms, and concepts used througho
 ### Omnibus Wallet
 **Definition:** A single blockchain wallet that holds stablecoins on behalf of multiple customers.
 
+**Visual Comparison:**
+
+```mermaid
+graph TB
+    subgraph "OMNIBUS WALLET MODEL - Our Choice"
+        Bank1[Bank Omnibus Wallet<br/>0xABC123<br/>Total: 10M USDC]
+
+        SubLedger[Internal Sub-Ledger Database]
+        Cust1[Customer A: 500K USDC]
+        Cust2[Customer B: 300K USDC]
+        Cust3[Customer C: 200K USDC]
+        Cust4[... 997 more customers]
+
+        Bank1 -.->|Tracked internally| SubLedger
+        SubLedger --> Cust1
+        SubLedger --> Cust2
+        SubLedger --> Cust3
+        SubLedger --> Cust4
+    end
+
+    subgraph "INDIVIDUAL WALLET MODEL - Alternative"
+        Bank2[Bank manages 1,000 wallets]
+
+        W1[Wallet 1: 0xDEF456<br/>Customer A: 500K USDC]
+        W2[Wallet 2: 0xGHI789<br/>Customer B: 300K USDC]
+        W3[Wallet 3: 0xJKL012<br/>Customer C: 200K USDC]
+        W4[... 997 more wallets]
+
+        Bank2 --> W1
+        Bank2 --> W2
+        Bank2 --> W3
+        Bank2 --> W4
+    end
+
+    style Bank1 fill:#d4edda
+    style Bank2 fill:#fff3cd
+```
+
+**Omnibus Benefits:** Lower gas costs, faster on-us transfers, better privacy
+**Individual Benefits:** Simpler reconciliation, transparent balances
+
 **Analogy:** Like a bank's vault holding cash for all depositors (not separate safe deposit boxes per customer).
 
 **Example:**
@@ -169,6 +235,45 @@ This glossary explains all technical terms, acronyms, and concepts used througho
 
 **Our usage:** Hold 90-95% of total USDC in cold storage.
 
+**Visual: Hot/Cold Wallet Architecture**
+
+```mermaid
+graph TB
+    subgraph "HOT WALLET - Online Daily Operations"
+        HotWallet[Hot Wallet<br/>0xHOT123<br/>Balance: 5M USDC<br/>5% of total]
+        Internet[Connected to Internet]
+        API[Banking API]
+
+        HotWallet <--> Internet
+        API <--> Internet
+    end
+
+    subgraph "COLD WALLET - Offline Secure Storage"
+        ColdWallet[Cold Wallet<br/>0xCOLD456<br/>Balance: 95M USDC<br/>95% of total]
+        HSM[Hardware Security Module<br/>Air-Gapped]
+        Vault[Physical Secure Vault]
+
+        ColdWallet --- HSM
+        HSM --- Vault
+    end
+
+    subgraph "DAILY SWEEP PROCESS"
+        Evening[11:59 PM Daily]
+        Check{Hot Wallet<br/>Balance > 5M?}
+        Sweep[Transfer Excess<br/>Hot → Cold]
+
+        Evening --> Check
+        Check -->|YES| Sweep
+        Sweep -.->|Secure Transfer| ColdWallet
+    end
+
+    Customers[Customers] -->|Buy/Sell/Transfer| HotWallet
+
+    style HotWallet fill:#fff3cd
+    style ColdWallet fill:#d4edda
+    style Customers fill:#e1f5ff
+```
+
 ---
 
 ### Wallet Sweep
@@ -203,6 +308,30 @@ This glossary explains all technical terms, acronyms, and concepts used througho
 3. Circle sends tokens to our omnibus wallet
 
 **Not to be confused with:** "Buy" (customer buying from us - we don't mint, we allocate from existing inventory)
+
+**Visual: Mint/Burn Lifecycle**
+
+```mermaid
+sequenceDiagram
+    participant Bank as Our Bank
+    participant Circle as Circle Issuer
+    participant Blockchain as Ethereum
+    participant Treasury as Bank Treasury Reserves
+
+    Note over Bank,Blockchain: MINT PROCESS (Create New USDC)
+    Bank->>Circle: Request mint 10M USDC
+    Bank->>Treasury: Wire $10M to Circle's account
+    Circle->>Circle: Verify $10M received
+    Circle->>Blockchain: Mint 10M USDC tokens
+    Blockchain-->>Bank: 10M USDC in omnibus wallet
+
+    Note over Bank,Blockchain: BURN PROCESS (Destroy USDC)
+    Bank->>Circle: Request redemption 10M USDC
+    Bank->>Blockchain: Send 10M USDC to Circle's wallet
+    Circle->>Blockchain: Burn 10M USDC (destroy tokens)
+    Circle->>Treasury: Wire $10M to bank's account
+    Treasury-->>Bank: $10M fiat received (T+1)
+```
 
 ---
 
@@ -373,6 +502,51 @@ This glossary explains all technical terms, acronyms, and concepts used througho
 - Polygon: 5-10 minutes (faster blocks)
 
 **Why we wait:** Ensures transaction cannot be reversed (finality).
+
+**Visual: Transaction Lifecycle**
+
+```mermaid
+sequenceDiagram
+    participant Customer
+    participant Portal
+    participant API
+    participant Custody
+    participant Blockchain
+    participant Recipient
+
+    Note over Customer,Recipient: TRANSACTION LIFECYCLE (15-30 minutes total)
+
+    Customer->>Portal: Send 100K USDC to 0xRECIPIENT
+    Portal->>API: POST /transfer
+
+    Note over API: PHASE 1: Validation (30 sec)
+    API->>API: Check balance, limits, compliance
+
+    Note over API,Custody: PHASE 2: Signing (10 sec)
+    API->>Custody: Sign transaction
+    Custody->>Custody: HSM signs with private key
+    Custody-->>API: Signed transaction
+
+    Note over API,Blockchain: PHASE 3: Broadcasting (5 sec)
+    API->>Blockchain: Broadcast transaction
+    Blockchain-->>API: Tx hash: 0xTX123
+
+    Note over Blockchain: PHASE 4: Pending (2-5 min)
+    Blockchain->>Blockchain: Transaction in mempool<br/>Waiting for miner
+
+    Note over Blockchain: PHASE 5: Included in Block (2 min)
+    Blockchain->>Blockchain: Block 12345 mined<br/>Tx included
+
+    Note over Blockchain: PHASE 6: Confirmations (10-20 min)
+    Blockchain->>Blockchain: Wait 12 blocks<br/>Block 12345 → 12357
+
+    Note over Blockchain,Recipient: PHASE 7: Finalized
+    Blockchain->>Recipient: 100K USDC arrived<br/>Cannot be reversed
+
+    Blockchain-->>API: Transaction confirmed
+    API->>Portal: Transfer complete
+    Portal->>Customer: Success notification
+```
 
 ---
 

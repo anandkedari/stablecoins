@@ -13,6 +13,29 @@ This document provides **side-by-side comparisons** to help stakeholders underst
 
 ## 💸 COMPARISON 1: STABLECOIN TRANSFER VS WIRE TRANSFER
 
+**Visual Timeline Comparison:**
+
+```mermaid
+gantt
+    title Transaction Speed: USDC vs Wire Transfer
+    dateFormat HH:mm
+    axisFormat %H:%M
+
+    section USDC Transfer
+    Customer initiates        :done, usdc1, 09:00, 1m
+    AML screening            :done, usdc2, after usdc1, 2m
+    Blockchain confirmation  :active, usdc3, after usdc2, 20m
+    Recipient receives       :milestone, usdc4, after usdc3, 0m
+
+    section Wire Transfer
+    Customer initiates       :done, wire1, 09:00, 1h
+    Bank processing         :done, wire2, after wire1, 3h
+    Correspondent bank 1    :crit, wire3, after wire2, 8h
+    Correspondent bank 2    :crit, wire4, after wire3, 8h
+    Recipient bank          :crit, wire5, after wire4, 4h
+    Recipient receives      :milestone, wire6, after wire5, 0m
+```
+
 | Attribute | **USDC Transfer (Stablecoin)** | **Wire Transfer (Traditional)** |
 |-----------|--------------------------------|----------------------------------|
 | **Settlement Time** | 15-30 minutes | 1-2 business days (T+1 or T+2) |
@@ -49,6 +72,33 @@ This document provides **side-by-side comparisons** to help stakeholders underst
 
 ## 🏦 COMPARISON 3: STABLECOIN ISSUERS
 
+**Visual: Issuer Trust Spectrum**
+
+```mermaid
+graph LR
+    subgraph "HIGH TRUST - Regulated & Audited"
+        USDC[USDC Circle<br/>Monthly audits<br/>US regulated<br/>$45B market cap]
+        USDP[USDP Paxos<br/>Monthly audits<br/>NY Trust Company<br/>$1B market cap]
+    end
+
+    subgraph "MEDIUM TRUST - Limited Transparency"
+        USDT[USDT Tether<br/>Opaque audits<br/>Offshore<br/>$95B market cap]
+    end
+
+    subgraph "DISCONTINUED"
+        BUSD[BUSD<br/>Discontinued Feb 2024]
+    end
+
+    USDC -.->|Our Primary Choice| Bank[Our Bank]
+    USDP -.->|Backup Phase 2| Bank
+
+    style USDC fill:#d4edda
+    style USDP fill:#d4edda
+    style USDT fill:#fff3cd
+    style BUSD fill:#f8d7da
+    style Bank fill:#e1f5ff
+```
+
 | Feature | **USDC (Circle)** | **USDT (Tether)** | **USDP (Paxos)** | **BUSD (Binance/Paxos)** |
 |---------|-------------------|-------------------|------------------|---------------------------|
 | **Issuer** | Circle Internet Financial | Tether Limited | Paxos Trust Company | Paxos (discontinued Feb 2024) |
@@ -70,6 +120,56 @@ This document provides **side-by-side comparisons** to help stakeholders underst
 ---
 
 ## ⚖️ COMPARISON 4: OMNIBUS WALLET VS INDIVIDUAL WALLETS
+
+**Visual Architecture Comparison:**
+
+```mermaid
+graph TB
+    subgraph "OMNIBUS MODEL - Lower Cost, Higher Efficiency"
+        O_Bank[Bank]
+        O_Wallet[Single Omnibus Wallet<br/>0xONE123<br/>10M USDC total]
+        O_SubLedger[Sub-Ledger Database]
+        O_C1[Customer A: 500K]
+        O_C2[Customer B: 300K]
+        O_C3[Customer C: 200K]
+        O_C4[Customer D-Z: 9M]
+
+        O_Bank --> O_Wallet
+        O_Wallet -.->|Internal tracking| O_SubLedger
+        O_SubLedger --> O_C1
+        O_SubLedger --> O_C2
+        O_SubLedger --> O_C3
+        O_SubLedger --> O_C4
+
+        O_OnChain[On-Chain Transfer<br/>Only when customer<br/>sends externally]
+        O_OffChain[Off-Chain Transfer<br/>Between our customers<br/>Instant & Free]
+
+        O_Wallet -.->|Rare| O_OnChain
+        O_SubLedger -.->|Common| O_OffChain
+    end
+
+    subgraph "INDIVIDUAL MODEL - Higher Cost, Lower Efficiency"
+        I_Bank[Bank]
+        I_W1[Wallet A: 0xA001<br/>500K USDC]
+        I_W2[Wallet B: 0xB002<br/>300K USDC]
+        I_W3[Wallet C: 0xC003<br/>200K USDC]
+        I_W4[Wallets D-Z<br/>1000 wallets]
+
+        I_Bank --> I_W1
+        I_Bank --> I_W2
+        I_Bank --> I_W3
+        I_Bank --> I_W4
+
+        I_Every[Every Transfer<br/>Always on-chain<br/>15-30 min + gas fee]
+
+        I_W1 -.-> I_Every
+        I_W2 -.-> I_Every
+    end
+
+    style O_Wallet fill:#d4edda
+    style O_OffChain fill:#d4edda
+    style I_Every fill:#f8d7da
+```
 
 | Attribute | **Omnibus Wallet Model (Our Choice)** | **Individual Wallet Model** |
 |-----------|----------------------------------------|-----------------------------|
@@ -109,6 +209,45 @@ This document provides **side-by-side comparisons** to help stakeholders underst
 ---
 
 ## 📊 COMPARISON 6: BLOCKCHAIN NETWORKS
+
+**Visual: Speed vs Cost vs Security Trade-offs**
+
+```mermaid
+quadrantChart
+    title Blockchain Network Trade-offs
+    x-axis Low Cost --> High Cost
+    y-axis Low Speed --> High Speed
+    quadrant-1 Ideal Zone
+    quadrant-2 Fast but Expensive
+    quadrant-3 Slow and Expensive
+    quadrant-4 Cheap but Slow
+
+    Ethereum: [0.7, 0.3]
+    Polygon: [0.2, 0.6]
+    Solana: [0.1, 0.9]
+    Bitcoin: [0.8, 0.1]
+```
+
+**Transaction Confirmation Time Comparison:**
+
+```mermaid
+gantt
+    title Time to Finality (Transaction Confirmed)
+    dateFormat mm:ss
+    axisFormat %M:%S
+
+    section Solana
+    Transaction confirmed    :done, sol, 00:00, 2m
+
+    section Polygon
+    Transaction confirmed    :done, poly, 00:00, 7m
+
+    section Ethereum
+    Transaction confirmed    :active, eth, 00:00, 20m
+
+    section Bitcoin
+    Transaction confirmed    :crit, btc, 00:00, 60m
+```
 
 | Feature | **Ethereum Mainnet** | **Polygon (Matic)** | **Solana** |
 |---------|---------------------|---------------------|------------|
@@ -151,6 +290,47 @@ This document provides **side-by-side comparisons** to help stakeholders underst
 ---
 
 ## 🌐 COMPARISON 8: LAUNCH MARKETS (PHASE 1)
+
+**Visual: Regulatory Clarity vs Market Size**
+
+```mermaid
+quadrantChart
+    title Launch Market Prioritization
+    x-axis Low Market Size --> High Market Size
+    y-axis Low Regulatory Clarity --> High Regulatory Clarity
+    quadrant-1 High Opportunity
+    quadrant-2 Complex but Large
+    quadrant-3 Challenging
+    quadrant-4 Emerging Markets
+
+    Singapore: [0.3, 0.9]
+    USA: [0.9, 0.6]
+    UAE: [0.2, 0.8]
+    EU: [0.7, 0.4]
+    UK: [0.5, 0.5]
+    India: [0.6, 0.1]
+```
+
+**Phase Rollout Timeline:**
+
+```mermaid
+gantt
+    title Market Launch Roadmap
+    dateFormat YYYY-MM
+    axisFormat %b %Y
+
+    section Phase 1
+    Singapore launch         :done, sg, 2026-01, 6M
+    USA launch              :active, us, 2026-03, 12M
+
+    section Phase 2
+    UAE launch              :uae, 2026-09, 9M
+    EU launch               :eu, 2027-01, 18M
+    UK launch               :uk, 2027-03, 15M
+
+    section Phase 3
+    India evaluation        :crit, india, 2027-06, 12M
+```
 
 | Country | **Singapore** | **United States** | **UAE** | **European Union** |
 |---------|---------------|-------------------|---------|-------------------|

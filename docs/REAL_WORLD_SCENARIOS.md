@@ -29,16 +29,48 @@ Day 2, 8:00 AM: Indian bank receives payment (T+1 settlement)
 Day 2, 9:00 AM: Indian supplier credited (converted to INR at bank's rate)
 ```
 
+**Visual: Traditional Wire Transfer Flow**
+
+```mermaid
+sequenceDiagram
+    participant TC as TechCorp US
+    participant USBank as US Bank
+    participant Corr1 as Correspondent Bank 1
+    participant Corr2 as Correspondent Bank 2
+    participant IndiaBank as Indian Bank
+    participant Supplier as Indian Supplier
+
+    Note over TC,Supplier: DAY 1 - Monday 9:00 AM
+    TC->>USBank: Wire $250,000 to India
+    USBank->>USBank: Debit TechCorp account<br/>Fee: $45
+
+    Note over USBank,Corr1: 4 hours delay
+    USBank->>Corr1: SWIFT MT103 message
+    Corr1->>Corr1: Intermediary processing<br/>Fee: $25
+
+    Note over Corr1,Corr2: Overnight
+    Corr1->>Corr2: Forward payment<br/>Fee: $15
+
+    Note over TC,Supplier: DAY 2 - Tuesday 8:00 AM
+    Corr2->>IndiaBank: Receive USD
+    IndiaBank->>IndiaBank: Convert USD → INR<br/>FX markup: 2% ($5,000)
+    IndiaBank->>Supplier: Credit INR amount
+
+    Note over TC,Supplier: TOTAL TIME: 24+ hours<br/>TOTAL COST: $5,085<br/>STATUS: Opaque no tracking
+```
+
 **Costs:**
 - Wire fee: $45
+- Intermediary fees: $40
 - FX markup: ~2% ($5,000)
-- **Total cost: $5,045**
+- **Total cost: $5,085**
 
 **Issues:**
 - 1-2 day settlement
 - Hidden FX markup
 - No transparency on status
 - Supplier bears FX risk (USD → INR conversion)
+- Multiple intermediaries
 
 ---
 
@@ -53,6 +85,39 @@ Day 1, 9:15 AM: Indian supplier receives 250,000 USDC in their wallet
 Day 1, 9:20 AM: Supplier converts USDC → INR (if needed) via local exchange
 ```
 
+**Visual: Stablecoin Transfer Flow**
+
+```mermaid
+sequenceDiagram
+    participant TC as TechCorp US
+    participant Bank as Our Bank Platform
+    participant AML as AML Screening
+    participant Blockchain as Ethereum
+    participant Supplier as Indian Supplier
+    participant Exchange as Local Exchange optional
+
+    Note over TC,Exchange: DAY 1 - Monday 9:00 AM
+    TC->>Bank: Transfer 250K USDC to supplier
+    Bank->>Bank: Debit sub-ledger<br/>Fee: $25
+
+    Note over Bank,AML: 1 minute
+    Bank->>AML: Screen transaction
+    AML-->>Bank: PASS
+
+    Note over Bank,Blockchain: 15 minutes
+    Bank->>Blockchain: Broadcast transaction<br/>Gas fee: $5 absorbed
+    Blockchain->>Blockchain: 12 block confirmations
+
+    Note over TC,Exchange: 9:15 AM (15 minutes later)
+    Blockchain->>Supplier: 250K USDC received<br/>Full amount no FX loss
+
+    Note over Supplier,Exchange: Optional: Convert immediately
+    Supplier->>Exchange: Convert USDC → INR<br/>Better rate 0.5% vs 2%
+    Exchange-->>Supplier: INR credited
+
+    Note over TC,Exchange: TOTAL TIME: 15 minutes<br/>TOTAL COST: $25<br/>STATUS: Real-time tracking blockchain explorer
+```
+
 **Costs:**
 - Platform fee: $25 (0.01% of transaction)
 - Blockchain gas fee: $5 (absorbed by bank)
@@ -60,14 +125,41 @@ Day 1, 9:20 AM: Supplier converts USDC → INR (if needed) via local exchange
 
 **Benefits:**
 - ✅ 15-30 minute settlement (vs 1-2 days)
-- ✅ 99.5% cost reduction ($25 vs $5,045)
-- ✅ Real-time transaction tracking
+- ✅ 99.5% cost reduction ($25 vs $5,085)
+- ✅ Real-time transaction tracking (blockchain explorer)
 - ✅ Supplier can hold USDC (no forced conversion)
 - ✅ Transparent, predictable pricing
+- ✅ No intermediaries
 
 **Annual Impact:**
 - TechCorp sends 50 payments/year × $250K avg
 - **Savings: $250K+ per year**
+
+**Side-by-Side Comparison:**
+
+```mermaid
+graph LR
+    subgraph "Traditional Wire"
+        W1[Initiate] --> W2[1-2 Days]
+        W2 --> W3[$5,085 cost]
+        W3 --> W4[Opaque tracking]
+        W4 --> W5[Supplier receives]
+    end
+
+    subgraph "Stablecoin USDC"
+        S1[Initiate] --> S2[15 Minutes]
+        S2 --> S3[$25 cost]
+        S3 --> S4[Real-time tracking]
+        S4 --> S5[Supplier receives]
+    end
+
+    style W2 fill:#f8d7da
+    style W3 fill:#f8d7da
+    style W4 fill:#f8d7da
+    style S2 fill:#d4edda
+    style S3 fill:#d4edda
+    style S4 fill:#d4edda
+```
 
 ---
 
