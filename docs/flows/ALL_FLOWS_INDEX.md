@@ -13,12 +13,37 @@ This document provides a complete index of all customer and operational journey 
 
 ---
 
+## 📌 UNDERSTANDING "DURATION"
+
+**What Duration Means:** Total time from process start to completion (end-to-end)
+
+**These are business process timeframes**, not technical system delays. They include:
+- ✅ Automated system processing (milliseconds to minutes)
+- ✅ Blockchain confirmation times (15-30 minutes typical)
+- ✅ Third-party integrations (KYC provider, AML screening)
+- ✅ Manual review steps (compliance officer approval)
+- ✅ External dependencies (issuer liquidity, network congestion)
+
+**Why We Document Durations:**
+1. **Customer SLAs** - Set realistic expectations in terms & conditions
+2. **Operational Planning** - Staff scheduling, capacity planning
+3. **Compliance Requirements** - Meet regulatory reporting deadlines
+4. **Risk Management** - Define monitoring windows for suspicious activity
+5. **Business Metrics** - Track against benchmarks, identify bottlenecks
+
+---
+
 ## ✅ COMPLETED FLOWS WITH DIAGRAMS
 
 ### 1. **CUSTOMER ONBOARDING FLOW**
 **File:** `docs/flows/CUSTOMER_ONBOARDING_FLOW.md`
 **Journey:** Application → KYC → AML → Wallet Provisioning → Active Account
-**Duration:** 1-10 days
+**Duration:** 1-10 days (Varies by customer complexity)
+**Duration Breakdown:**
+  - KYC document verification: 24-48 hours (third-party provider)
+  - AML screening: 1-2 hours (automated + sanctions checks)
+  - Manual compliance review: 1-5 days (if flagged for manual review)
+  - Wallet provisioning: Minutes (automated)
 **Diagram Type:** Mermaid Sequence Diagram
 **Key Phases:**
 - Phase 1: Application Submission
@@ -37,7 +62,13 @@ This document provides a complete index of all customer and operational journey 
 ### 2. **BUY STABLECOIN FLOW**
 **File:** `docs/flows/BUY_FLOW_DETAILED.md`
 **Journey:** Customer deposits fiat → Receives stablecoin
-**Duration:** 30 minutes
+**Duration:** ~30 minutes (Near real-time processing)
+**Duration Breakdown:**
+  - Fiat account debit: Instant (core banking)
+  - AML screening: 1-2 minutes (automated)
+  - Blockchain confirmation: 15-25 minutes (12 blocks on Ethereum)
+  - Sub-ledger credit: Instant (internal database)
+  - Customer notification: Instant (email/SMS)
 **Diagram Type:** Mermaid Sequence Diagram
 **Key Phases:**
 - Phase 1: Customer initiates buy order
@@ -58,7 +89,12 @@ This document provides a complete index of all customer and operational journey 
 ### 3. **SELL STABLECOIN FLOW**
 **File:** `docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md` (Section 5.2)
 **Journey:** Customer redeems stablecoin → Receives fiat
-**Duration:** 30 minutes to T+1
+**Duration:** 30 minutes to T+1 (Depends on liquidity availability)
+**Duration Breakdown:**
+  - **Instant path (30 min):** Bank has USDC liquidity, burns immediately
+  - **T+1 path (next business day):** Bank must request redemption from issuer (Circle), receive fiat settlement next day
+  - Blockchain burn confirmation: 15-25 minutes
+  - Fiat credit to customer: Instant (if liquidity available) or T+1
 **Diagram Type:** Mermaid Sequence Diagram
 **Key Phases:**
 - Phase 1: Customer initiates sell order
@@ -78,7 +114,13 @@ This document provides a complete index of all customer and operational journey 
 ### 4. **ON-CHAIN TRANSFER FLOW**
 **File:** `docs/flows/TRANSFER_FLOW_ONCHAIN.md`
 **Journey:** Customer sends stablecoin to external wallet
-**Duration:** 15-30 minutes
+**Duration:** 15-30 minutes (Blockchain-dependent)
+**Duration Breakdown:**
+  - Recipient address screening: 30 seconds (Chainalysis API)
+  - Travel Rule check (if >$1,000): 1-2 minutes
+  - Transaction signing: Seconds (HSM)
+  - Blockchain confirmation: 12-25 minutes (depends on gas fees & network congestion)
+  - Post-transaction reconciliation: Instant
 **Diagram Type:** Mermaid Sequence Diagram
 **Key Phases:**
 - Phase 1: Initiation (customer provides recipient address)
@@ -99,7 +141,13 @@ This document provides a complete index of all customer and operational journey 
 ### 5. **DAILY RECONCILIATION FLOW**
 **File:** `docs/flows/RECONCILIATION_FLOW.md`
 **Journey:** Automated daily check to ensure ledgers match
-**Duration:** 30-60 minutes (automated)
+**Duration:** 30-60 minutes (Overnight batch process - No customer impact)
+**Duration Breakdown:**
+  - Scheduled trigger: 11:59 PM daily (automated)
+  - Data extraction: 5-10 minutes (sub-ledger, blockchain, ATLAS)
+  - Comparison & analysis: 10-20 minutes (automated)
+  - Report generation: 5 minutes
+  - Treasury review (if breaks detected): 10-30 minutes next morning
 **Diagram Type:** Mermaid Sequence Diagram
 **Key Phases:**
 - Phase 1: Scheduled trigger (daily 11:59 PM)
@@ -123,13 +171,13 @@ This document provides a complete index of all customer and operational journey 
 
 ## 📊 FLOW SUMMARY TABLE
 
-| Flow | File | Diagram | Duration | Actors | Complexity |
-|------|------|---------|----------|--------|------------|
-| **Onboarding** | `CUSTOMER_ONBOARDING_FLOW.md` | ✅ Mermaid | 1-10 days | Customer, KYC, AML, Custody | High |
-| **Buy** | `BUY_FLOW_DETAILED.md` | ✅ Mermaid | 30 min | Customer, ATLAS, Issuer, Blockchain | High |
-| **Sell** | `MASTER_GUIDE_PART2.md` | ✅ Mermaid | 30 min - T+1 | Customer, ATLAS, Issuer | Medium |
-| **Transfer (On-Chain)** | `TRANSFER_FLOW_ONCHAIN.md` | ✅ Mermaid | 15-30 min | Customer, Compliance, Blockchain | High |
-| **Reconciliation** | `RECONCILIATION_FLOW.md` | ✅ Mermaid | 30-60 min | Automated, Treasury | Medium |
+| Flow | File | Diagram | Total Duration | Primary Bottleneck | Actors | Complexity |
+|------|------|---------|----------------|-------------------|--------|------------|
+| **Onboarding** | `CUSTOMER_ONBOARDING_FLOW.md` | ✅ Mermaid | 1-10 days | Manual compliance review | Customer, KYC, AML, Custody | High |
+| **Buy** | `BUY_FLOW_DETAILED.md` | ✅ Mermaid | ~30 min | Blockchain confirmation | Customer, ATLAS, Issuer, Blockchain | High |
+| **Sell** | `MASTER_GUIDE_PART2.md` | ✅ Mermaid | 30 min - T+1 | Issuer redemption (if needed) | Customer, ATLAS, Issuer | Medium |
+| **Transfer (On-Chain)** | `TRANSFER_FLOW_ONCHAIN.md` | ✅ Mermaid | 15-30 min | Blockchain confirmation | Customer, Compliance, Blockchain | High |
+| **Reconciliation** | `RECONCILIATION_FLOW.md` | ✅ Mermaid | 30-60 min | Data extraction across systems | Automated, Treasury | Medium |
 
 ---
 

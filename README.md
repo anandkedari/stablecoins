@@ -173,13 +173,25 @@ All process flows include **Mermaid sequence diagrams** for visual representatio
 
 ## 🔄 Process Flows Catalog
 
-| Flow | Duration | Diagram | Status |
-|------|----------|---------|--------|
-| [Customer Onboarding](./docs/flows/CUSTOMER_ONBOARDING_FLOW.md) | 1-10 days | ✅ Mermaid | Complete |
-| [Buy Stablecoin](./docs/flows/BUY_FLOW_DETAILED.md) | 30 minutes | ✅ Mermaid | Complete |
-| [Sell Stablecoin](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md#section-5-2) | 30 min - T+1 | ✅ Mermaid | Complete |
-| [On-Chain Transfer](./docs/flows/TRANSFER_FLOW_ONCHAIN.md) | 15-30 minutes | ✅ Mermaid | Complete |
-| [Daily Reconciliation](./docs/flows/RECONCILIATION_FLOW.md) | 30-60 minutes | ✅ Mermaid | Complete |
+### Understanding "Duration"
+
+**Duration** = Total time from start to completion for each business process
+
+These are **expected completion times** for setting customer expectations and business planning, not system performance metrics.
+
+| Flow | Duration | What This Time Includes |
+|------|----------|------------------------|
+| [Customer Onboarding](./docs/flows/CUSTOMER_ONBOARDING_FLOW.md) | **1-10 days** | KYC document verification (24-48h) + AML screening (1-2h) + Manual compliance review (1-5 days) + Wallet provisioning (minutes) |
+| [Buy Stablecoin](./docs/flows/BUY_FLOW_DETAILED.md) | **30 minutes** | Fiat debit (instant) + AML check (2 min) + Blockchain confirmation (15-25 min) + Ledger update (instant) |
+| [Sell Stablecoin](./docs/MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md#section-5-2) | **30 min - T+1** | Instant if bank has liquidity; Next business day if issuer redemption needed |
+| [On-Chain Transfer](./docs/flows/TRANSFER_FLOW_ONCHAIN.md) | **15-30 minutes** | Address screening (1 min) + Blockchain confirmation (12-20 min depending on network congestion) + Post-transaction update (1 min) |
+| [Daily Reconciliation](./docs/flows/RECONCILIATION_FLOW.md) | **30-60 minutes** | Automated overnight batch process - No customer impact |
+
+**Why These Times Matter:**
+- **For Customers:** Setting realistic expectations ("Your stablecoin will arrive in ~30 minutes")
+- **For Business:** Capacity planning, staffing, SLA commitments
+- **For Compliance:** Meeting regulatory reporting deadlines
+- **For Risk:** Transaction monitoring windows, fraud detection timeframes
 
 **See:** [Complete Flow Index](./docs/flows/ALL_FLOWS_INDEX.md)
 
