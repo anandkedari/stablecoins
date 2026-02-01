@@ -122,30 +122,6 @@ stablecoin/
 
 ---
 
-## 🎨 Viewing Diagrams
-
-All process flows include **Mermaid sequence diagrams** for visual representation.
-
-### How to View:
-
-1. **On GitHub** (Easiest - Auto-renders):
-   - Open any flow file on GitHub
-   - Diagrams display automatically
-
-2. **Mermaid Live Editor** (No installation):
-   - Go to https://mermaid.live/
-   - Copy diagram code from any flow
-   - Paste to see visual representation
-   - Export as PNG/SVG
-
-3. **VS Code** (For development):
-   - Install "Markdown Preview Mermaid Support" extension
-   - Open preview (Cmd/Ctrl + Shift + V)
-
-📖 **Detailed Instructions:** [HOW_TO_VIEW_DIAGRAMS.md](./HOW_TO_VIEW_DIAGRAMS.md)
-
----
-
 ## 📋 Complete Section Index
 
 ### Part 1: Business Foundation

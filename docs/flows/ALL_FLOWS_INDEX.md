@@ -197,33 +197,6 @@ This document provides a complete index of all customer and operational journey 
 
 ---
 
-## 🎨 HOW TO VIEW THE DIAGRAMS
-
-All flows include **Mermaid sequence diagrams** that show visual step-by-step interactions between actors.
-
-### View Methods:
-
-1. **GitHub** (Easiest - Automatic Rendering):
-   - Go to: https://github.com/anandkedari/stablecoins
-   - Open any flow file
-   - Diagrams render automatically!
-
-2. **Mermaid Live Editor** (No Installation):
-   - Go to: https://mermaid.live/
-   - Copy Mermaid code from flow file
-   - Paste into editor
-   - See visual diagram!
-
-3. **VS Code** (For Developers):
-   - Install "Markdown Preview Mermaid Support" extension
-   - Open flow file
-   - Right-click → "Open Preview"
-   - Diagrams render in preview pane
-
-4. **See:** `QUICK_START_DIAGRAMS.md` for detailed instructions
-
----
-
 ## 🔍 FLOW CHARACTERISTICS
 
 ### Customer-Facing Flows (4)
@@ -308,10 +281,6 @@ If you need more flows with diagrams, these can be added:
 - [Master Implementation Guide - Part 1](../MASTER_STABLECOIN_IMPLEMENTATION_GUIDE.md)
 - [Master Implementation Guide - Part 2](../MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART2.md)
 - [Master Implementation Guide - Part 3](../MASTER_STABLECOIN_IMPLEMENTATION_GUIDE_PART3.md)
-
-**Diagrams:**
-- [How to View Diagrams](../../HOW_TO_VIEW_DIAGRAMS.md)
-- [Quick Start Diagrams](../../QUICK_START_DIAGRAMS.md)
 
 ---
 
